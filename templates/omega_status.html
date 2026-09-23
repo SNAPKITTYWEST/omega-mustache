@@ -1,0 +1,41 @@
+{{/* SPDX-License-Identifier: AGPL-3.0-or-later OR Apache-2.0 */}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Ω Status</title>
+  <style>
+    body { font-family: monospace; background: #0a0a0a; color: #e0e0e0; padding: 2rem; }
+    h1 { color: {{if .Preserved}}#7fff7f{{else}}#ff6060{{end}}; }
+    .preserved { color: #7fff7f; font-size: 1.4rem; }
+    .violated  { color: #ff6060; font-size: 1.4rem; }
+    .hash      { font-size: 0.75rem; color: #888; word-break: break-all; }
+    .class-ok  { color: #7fff7f; }
+    .class-err { color: #ff6060; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.2rem 0; }
+  </style>
+</head>
+<body>
+<h1>Ω Global Invariant Status</h1>
+
+{{if .Preserved}}
+<p class="preserved">✓ PRESERVED</p>
+{{else}}
+<p class="violated">✗ VIOLATED — AGENT HALTED</p>
+{{end}}
+
+<h2>Signatures</h2>
+<p>Before: <span class="hash">{{.Before}}</span></p>
+<p>After:  <span class="hash">{{.After}}</span></p>
+
+<h2>Invariant Classes (10/10 required)</h2>
+<ul>
+{{range .Classes}}
+  <li class="{{if .Passed}}class-ok{{else}}class-err{{end}}">
+    {{if .Passed}}✓{{else}}✗{{end}} {{.Name}}
+  </li>
+{{end}}
+</ul>
+</body>
+</html>

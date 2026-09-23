@@ -1,0 +1,47 @@
+{{/* SPDX-License-Identifier: AGPL-3.0-or-later OR Apache-2.0 */}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{.Title}}</title>
+  <style>
+    body { font-family: monospace; background: #0a0a0a; color: #e0e0e0; padding: 2rem; }
+    h1 { color: #7fff7f; }
+    .hash  { font-size: 0.7rem; color: #888; word-break: break-all; }
+    .ok    { color: #7fff7f; }
+    .err   { color: #ff6060; }
+    table  { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+    td, th { border: 1px solid #222; padding: 0.4rem 0.6rem; font-size: 0.8rem; }
+    th     { background: #1a1a1a; color: #aaa; }
+    tr:hover { background: #111; }
+  </style>
+</head>
+<body>
+<h1>WORM Chain — {{.Length}} records</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Record ID</th>
+      <th>Timestamp</th>
+      <th>Ω OK</th>
+      <th>Prev Hash</th>
+      <th>Hash</th>
+    </tr>
+  </thead>
+  <tbody>
+  {{range $i, $r := .Records}}
+  <tr>
+    <td>{{$i}}</td>
+    <td>{{$r.RecordID}}</td>
+    <td>{{$r.Timestamp}}</td>
+    <td class="{{if $r.OmegaOK}}ok{{else}}err{{end}}">{{if $r.OmegaOK}}✓{{else}}✗{{end}}</td>
+    <td class="hash">{{$r.PreviousHash}}</td>
+    <td class="hash">{{$r.Hash}}</td>
+  </tr>
+  {{end}}
+  </tbody>
+</table>
+</body>
+</html>

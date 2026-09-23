@@ -1,0 +1,67 @@
+{{/* SPDX-License-Identifier: AGPL-3.0-or-later OR Apache-2.0 */}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>{{.Title}}</title>
+  <style>
+    body { font-family: monospace; background: #0a0a0a; color: #e0e0e0; padding: 2rem; }
+    h1   { color: #7fff7f; }
+    .ok  { color: #7fff7f; }
+    .err { color: #ff6060; }
+    .stage { margin: 0.2rem 0; padding: 0.3rem 0.6rem; border-left: 3px solid; }
+    .stage-ok  { border-color: #7fff7f; }
+    .stage-err { border-color: #ff6060; }
+    .hash { font-size: 0.75rem; color: #888; word-break: break-all; }
+    table { border-collapse: collapse; margin-top: 1rem; }
+    td, th { border: 1px solid #333; padding: 0.4rem 0.8rem; }
+    th { background: #1a1a1a; color: #aaa; }
+  </style>
+</head>
+<body>
+<h1>Ω Transition: {{.TransitionID}}</h1>
+<p>Agent: <strong>{{.AgentID}}</strong> &nbsp;|&nbsp; {{.Timestamp}}</p>
+
+{{if .Success}}
+<p class="ok">✓ TRANSITION ACCEPTED — Ω PRESERVED</p>
+{{else}}
+<p class="err">✗ TRANSITION REJECTED</p>
+{{end}}
+
+<h2>Ω Signatures</h2>
+<table>
+  <tr><th>Stage</th><th>Signature</th></tr>
+  <tr><td>Before</td><td class="hash">{{.OmegaBefore}}</td></tr>
+  <tr><td>After</td> <td class="hash">{{.OmegaAfter}}</td></tr>
+</table>
+
+<h2>Pipeline Stages</h2>
+{{range .Stages}}
+<div class="stage {{if .Passed}}stage-ok{{else}}stage-err{{end}}">
+  {{if .Passed}}✓{{else}}✗{{end}} {{.Name}}: {{.Message}}
+</div>
+{{end}}
+
+{{if .WORMRecord.RecordID}}
+<h2>WORM Record</h2>
+<table>
+  <tr><th>Field</th><th>Value</th></tr>
+  <tr><td>Record ID</td>    <td>{{.WORMRecord.RecordID}}</td></tr>
+  <tr><td>Ω Preserved</td>  <td class="{{if .WORMRecord.OmegaOK}}ok{{else}}err{{end}}">{{.WORMRecord.OmegaOK}}</td></tr>
+  <tr><td>Prev Hash</td>    <td class="hash">{{.WORMRecord.PreviousHash}}</td></tr>
+  <tr><td>Record Hash</td>  <td class="hash">{{.WORMRecord.Hash}}</td></tr>
+</table>
+{{end}}
+
+{{if .Error.Present}}
+<h2>Rejection Evidence</h2>
+<p class="err">Stage: {{.Error.Stage}} — {{.Error.Reason}}</p>
+{{range .Error.Evidence}}
+<div class="stage {{if .Passed}}stage-ok{{else}}stage-err{{end}}">
+  {{if .Passed}}✓{{else}}✗{{end}} {{.Name}}: {{.Message}}
+</div>
+{{end}}
+{{end}}
+
+</body>
+</html>

@@ -1,0 +1,29 @@
+{{/* SPDX-License-Identifier: AGPL-3.0-or-later OR Apache-2.0 */}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>K Tensor</title>
+  <style>
+    body { font-family: monospace; background: #0a0a0a; color: #e0e0e0; padding: 2rem; }
+    h1   { color: #7fff7f; }
+    .hash { font-size: 0.75rem; color: #888; }
+    .data { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-top: 1rem; }
+    .cell { background: #1a1a2a; border: 1px solid #334; padding: 0.2rem 0.5rem;
+            font-size: 0.8rem; border-radius: 2px; }
+  </style>
+</head>
+<body>
+<h1>K Tensor State</h1>
+<p>Shape: <strong>{{.Shape}}</strong></p>
+<p>Element Type: <strong>{{.ElemType}}</strong></p>
+<p>Hash: <span class="hash">{{.Hash}}</span></p>
+
+<h2>Data (flat, row-major)</h2>
+<div class="data">
+{{range .Data}}
+  <span class="cell">{{.}}</span>
+{{end}}
+</div>
+</body>
+</html>
